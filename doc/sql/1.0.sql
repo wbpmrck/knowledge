@@ -105,7 +105,7 @@ CREATE TABLE `knowledge_and_subject`
 
 CREATE TABLE `material`
 (
-	`id` BIGINT NOT NULL,
+	`id` BIGINT NOT NULL AUTO_INCREMENT,
 	`name` NVARCHAR(128) NOT NULL DEFAULT '' COMMENT '材料名称，标题',
 	`desc` NVARCHAR(256) NOT NULL DEFAULT '' COMMENT '材料描述',
 	`location` SMALLINT NOT NULL DEFAULT 0 COMMENT '材料位置编码。 0:知识中心统一管理的文件，url应该是后缀 1:互联网地址，url保存的是资源的绝对路径',

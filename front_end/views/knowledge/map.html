@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>知识树</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <!--样式表-->
+    <link rel="stylesheet" href="../../resources/css/reset.css">
+    <link rel="stylesheet" href="../../resources/css/style.css">
+</head>
+
+<body>
+    <div id="map">
+
+
+    </div>
+
+
+    <!--入口脚本-->
+    <script type="text/javascript">
+        var map = require("./map.js");
+        //从服务端获取所有知识点数据，加载到页面
+        map.init(<%-knowledgeNodes%>);
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head>
+    <title>&#x6D4B;&#x8BD5;&#x7F51;&#x7AD9;-login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!--样式表-->    <link rel="stylesheet" type="text/css" href="http://localhost:8080/static/packages/testWeb/css_pkg.css" />
+    <link rel="stylesheet" type="text/css" href="http://localhost:8080/static/c/testWeb/foot/foot.css" />
+</head>
+
+<body>
+
+    <!--使用fis的资源嵌入能力，引入组件html,组织页面结构-->
+    <div id="header">
+    
+    <div id="logo">
+    logo
+</div>
+
+    <span id="header-tip">&#x6211;&#x662F;&#x5934;&#x90E8;</span>
+    <img src="http://localhost:8080/static/resources/testWeb/resources/images/ren.png" alt="">
+</div>
+
+
+    
+    <div id="login">
+
+        <div id="main">
+            &#x7528;&#x6237;&#x540D;:<input type="text" id="user-name"> <br>
+            &#x5BC6;&#x7801;:<input type="text" id="password">
+
+        </div>
+
+        <button id="submit">&#x70B9;&#x51FB;&#x767B;&#x5F55;</button>
+    </div>
+
+    <div id="foot">
+    i am foot
+</div><script type="text/javascript" src="http://localhost:8080/static/packages/testWeb/_loader.js"></script>
+<script type="text/javascript" src="http://localhost:8080/static/packages/testWeb/lib_pkg.js"></script>
+<script type="text/javascript" src="http://localhost:8080/static/c/testWeb/logo/logo.js"></script>
+<script type="text/javascript" src="http://localhost:8080/static/packages/testWeb/components_pkg.js"></script>
+<script type="text/javascript" src="http://localhost:8080/static/packages/testWeb/modules_pkg.js"></script>
+<script type="text/javascript" src="http://localhost:8080/static/views/testWeb/views/user/login.js"></script>
+<script type="text/javascript">
+      OneLib.CMDSyntax.setSrcMap({
+    "/libs/someBigModule.js": {
+        "uri": "http://localhost:8080/libs/someBigModule.js",
+        "deps": []
+    }
+});
+
+
+define("/views/user/login.html.1",function(require,exports,module){
+
+        var loginEntry = require("/views/user/login.js");
+        loginEntry.init();
+        //这样也可以,使用服务端模板渲染的数据部分
+    
+ });</script>
+</body></html><!--下面是页面自己的内容--><!--入口脚本-->
