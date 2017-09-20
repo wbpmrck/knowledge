@@ -64,7 +64,7 @@ function makeNode(
         }
     }
     //构造根节点
-    var root = makeNode(-1,[],opt.collapseLayer>=1,null,null,null,null,1,subjectName);
+    var root = makeNode(-1,[],opt.collapseLayer>=1,70,null,"#2aa2f3",null,1,subjectName);
     
     //构造子节点
     buildSubTreeOf(ar,root);

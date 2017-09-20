@@ -12,6 +12,98 @@ const validate = require('../../framework/onelib/OneLib.Validation').targetWrapp
 module.exports = {
     
     /**
+     * 删除某个知识点（包括它和所有学科的关系）
+     * @param context
+     * @param knowledgeId
+     * @param forceDelete:是否强制删除（而非假删除)
+     * @returns {Promise.<*>}
+     */
+    async deleteKnowledge(context,{knowledgeId,forceDelete}) {
+    
+        //参数简单检查
+        let validateResult = await validate(knowledgeId, "knowledgeId").notNull().isIntStr(1,30)
+            .run();
+    
+        //如果验证通过
+        if (validateResult.pass) {
+    
+            let disabled = 0;
+            if(forceDelete==='true'){
+                //真删除
+                disabled = await models.knowledge.destroy({
+                    where:{
+                        id:knowledgeId
+                    }
+                });
+            }else{
+                //假删除知识点
+                disabled = await models.knowledge.update({enable:0},{
+                    where:{
+                        id:knowledgeId
+                    }
+                });
+            }
+    
+            if(disabled){
+                //删除知识点、学科关系
+                let deleted = await models.knowledge_and_subject.destroy({
+                    where:{
+                        knowledge_id:knowledgeId
+                    }
+                });
+    
+                return resp.success({data: deleted});
+            }else {
+                return resp.failed({desc: "删除【知识点】失败"});
+            }
+            
+    
+        }else {
+            return resp.failed({
+                code: resp.codes.PARAM_ILLEGAL,
+                desc: `${validateResult.desc}${validateResult.funcDesc}`
+            })
+        }
+    },
+    /**
+     * 删除某个学科里的某个知识点
+     * @param context
+     * @param knowledgeId
+     * @param subjectId
+     * @returns {Promise.<*>}
+     */
+    async deleteSubjectKnowledge(context,{knowledgeId,subjectId}) {
+    
+        //参数简单检查
+        let validateResult = await validate(knowledgeId, "knowledgeId").notNull().isIntStr(1,30)
+            .and(subjectId, "subjectId").notNull().isIntStr(1,30)
+            .run();
+    
+        //如果验证通过
+        if (validateResult.pass) {
+    
+            //删除知识点、学科关系
+            let deleted = await models.knowledge_and_subject.destroy({
+                where:{
+                    knowledge_id:knowledgeId,
+                    subject_id:subjectId
+                }
+            });
+    
+            if(deleted){
+                return resp.success({data: deleted});
+            }else {
+                return resp.failed({desc: "删除【知识点和学科关系】失败"});
+            }
+    
+        }else {
+            return resp.failed({
+                code: resp.codes.PARAM_ILLEGAL,
+                desc: `${validateResult.desc}${validateResult.funcDesc}`
+            })
+        }
+    },
+    /**
      * 添加某个学科下面的知识点
      * @param context
      * @param name:知识点名称

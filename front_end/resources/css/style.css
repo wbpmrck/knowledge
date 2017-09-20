@@ -1,32 +1,8 @@
-#login{
-    background-color: cornflowerblue;
+html,body{
+    width:100%;
+    height: 100%;
 }
-#logo{
-    border: solid 1px #ff2233;
-    margin: 10px;
-}
-#main{
-    background-color: yellow;
-}
-
-#main #user-name{
-    width: 200px;
-}
-#main #password{
-    width: 200px;
-}
-
-#submit{
-
-    width: 100px;
-    height: 40px;
-    border-radius: 2px;
-
-    background-color: darkcyan;
-}
-
-#header{
-    height: 200px;
-
-    background-color: aqua;
+#map{
+    width:100%;
+    height: 100%;
 }

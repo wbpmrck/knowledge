@@ -38,6 +38,44 @@ map.set(
  */
 
 map.set(
+    // 删除某个一个知识点
+    ['POST', '/knowledge/delete', 'ALLOW_ANONYMOUS'],
+    async function (ctx, next) {
+        const self = this;
+        try {
+            const { knowledgeId,forceDelete} = ctx.request.body;
+            
+            // 调用service获取返回数据
+            const result = await knowledgeService.deleteKnowledge(ctx,{ knowledgeId,forceDelete});
+            ctx.body = result;
+        } catch (e) {
+            resp.failed({ desc: e.stack || e.toString() }, ctx);
+        } finally {
+            // 执行流程交给下一个middle-ware
+            await next();
+        }
+    }
+);
+map.set(
+    // 删除某个学科下面的一个知识点
+    ['POST', '/knowledge/deleteFromSubject', 'ALLOW_ANONYMOUS'],
+    async function (ctx, next) {
+        const self = this;
+        try {
+            const { knowledgeId,subjectId} = ctx.request.body;
+            
+            // 调用service获取返回数据
+            const result = await knowledgeService.deleteSubjectKnowledge(ctx,{ knowledgeId,subjectId});
+            ctx.body = result;
+        } catch (e) {
+            resp.failed({ desc: e.stack || e.toString() }, ctx);
+        } finally {
+            // 执行流程交给下一个middle-ware
+            await next();
+        }
+    }
+);
+map.set(
     // 添加某个学科下面的一个知识点
     ['POST', '/knowledge/add', 'ALLOW_ANONYMOUS'],
     async function (ctx, next) {
