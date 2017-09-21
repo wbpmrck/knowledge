@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>测试网站-login</title>
+    <title>知识中心系统</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -22,10 +22,6 @@
     <!--下面是页面自己的内容-->
     <div id="home">
 
-        <ul>
-            <li v-for="user in users">{{user.id}}-{{user.nickName}}</li>
-        </ul>
-
     </div>
 
     <link rel="component" href="../../components/foot">
@@ -34,8 +30,7 @@
     <!--入口脚本-->
     <script type="text/javascript">
         var homeEntry = require("./index.js");
-        homeEntry.init(<%=userInfo%>);
-        //这样也可以,使用服务端模板渲染的数据部分
+        homeEntry.init();
     </script>
 </body>
 </html>

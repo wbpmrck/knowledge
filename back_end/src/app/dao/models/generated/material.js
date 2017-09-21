@@ -5,7 +5,8 @@ module.exports = function(sequelize, DataTypes) {
 		id: {
 			type: DataTypes.BIGINT,
 			allowNull: false,
-			primaryKey: true
+			primaryKey: true,
+			autoIncrement: true
 		},
 		name: {
 			type: DataTypes.STRING,
@@ -36,6 +37,11 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			allowNull: false,
 			defaultValue: ''
+		},
+		quality: {
+			type: DataTypes.INTEGER(6),
+			allowNull: false,
+			defaultValue: '0'
 		},
 		enable: {
 			type: DataTypes.INTEGER(6),

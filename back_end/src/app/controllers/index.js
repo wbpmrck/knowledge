@@ -25,7 +25,6 @@ map.set(
     async function (ctx,next) {
         await ctx.render('home/index.html', {
             // userInfo: JSON.stringify(ctx.getSessionUser())
-            userInfo: JSON.stringify([{id:1,nickName:'张三'}])
         });
         await next();
     }

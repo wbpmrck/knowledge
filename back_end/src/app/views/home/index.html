@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head>
-    <title>&#x6D4B;&#x8BD5;&#x7F51;&#x7AD9;-login</title>
+    <title>&#x77E5;&#x8BC6;&#x4E2D;&#x5FC3;&#x7CFB;&#x7EDF;</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,37 +13,23 @@
     <!--使用fis的资源嵌入能力，引入组件html,组织页面结构-->
     <div id="header">
     
-    <div id="logo">
-    logo
-</div>
-
-    <span id="header-tip">&#x6211;&#x662F;&#x5934;&#x90E8;</span>
-    <img src="http://localhost:8080/static/resources/testWeb/resources/images/ren.png" alt="">
 </div>
 
 
     
     <div id="home">
 
-        <ul>
-            <li v-for="user in users">{{user.id}}-{{user.nickName}}</li>
-        </ul>
-
     </div>
 
     <div id="foot">
-    i am foot
 </div><script type="text/javascript" src="http://localhost:8080/static/packages/testWeb/_loader.js"></script>
 <script type="text/javascript" src="http://localhost:8080/static/packages/testWeb/lib_pkg.js"></script>
-<script type="text/javascript" src="http://localhost:8080/static/c/testWeb/logo/logo.js"></script>
-<script type="text/javascript" src="http://localhost:8080/static/packages/testWeb/components_pkg.js"></script>
 <script type="text/javascript" src="http://localhost:8080/static/views/testWeb/views/home/index.js"></script>
 <script type="text/javascript">
 define("/views/home/index.html.1",function(require,exports,module){
 
         var homeEntry = require("/views/home/index.js");
-        homeEntry.init(<%=userInfo%>);
-        //这样也可以,使用服务端模板渲染的数据部分
+        homeEntry.init();
     
  });</script>
 </body></html><!--下面是页面自己的内容--><!--入口脚本-->
