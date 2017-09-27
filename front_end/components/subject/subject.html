@@ -1,0 +1,71 @@
+<div id="subject">
+    <h2>学科管理</h2>
+    <div class="line"></div>
+
+    <!--<div class="region-blk">-->
+        <el-row class="condition" type="flex" justify="space-between">
+            <el-col :span="8">
+                <el-form ref="form" :model="condition" label-width="80px">
+                    <el-form-item label="学科名称">
+                        <el-input placeholder="请输入要查找的学科" v-model="condition.name">
+                        </el-input>
+                    </el-form-item>
+
+                </el-form>
+            </el-col>
+
+            <el-col :span="6" class="condition-btn-region">
+                <el-button type="primary" icon="search" @click="query">查询</el-button>
+                <el-button type="primary" icon="plus">新增</el-button>
+            </el-col>
+        </el-row>
+
+    <div class="sm-line"></div>
+
+    <el-table
+            border
+            :data="subjects"
+            style="width: 100%">
+        <el-table-column
+                prop="name"
+                label="名称"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="desc"
+                label="描述"
+                >
+        </el-table-column>
+        <el-table-column
+                prop="enable"
+                width="80"
+                label="状态">
+            <template scope="scope">
+                {{scope.row.enable?"启用":"禁用"}}
+            </template>
+        </el-table-column>
+        <el-table-column
+                width="100"
+                label="技能树">
+            <template scope="scope">
+                <el-button
+                        icon="share"
+                        size="small"
+                        @click="viewSkillMap(scope.row)">查看</el-button>
+            </template>
+        </el-table-column>
+
+        <el-table-column
+                label="操作"
+                width="120">
+            <template scope="scope">
+                <el-button-group>
+                    <el-button @click="edit(scope.row)" type="primary" size="mini">编辑</el-button>
+                    <el-button @click="toggleEnable(scope.row)" type="warning" size="mini">{{scope.row.enable===1?"禁用":"启用"}}</el-button>
+                </el-button-group>
+            </template>
+        </el-table-column>
+    </el-table>
+
+    </div>
+</div>

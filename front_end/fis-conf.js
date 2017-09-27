@@ -38,19 +38,24 @@ fis.set('project.ignore', [
  ------------------------------------------------------------------*/
 
 //css pack
-fis.match(/^\/resources\/css\/(.*)(style\.css|reset\.css)$/i,{
+// fis.match(/^\/resources\/css\/(.*)(style\.css|reset\.css)$/i,{
+fis.match(/^\/resources\/css\/(.*)[.css]$/i,{
     packOrder:packOrderSeed++,
     packTo: '/static/packages/${site.name}/css_pkg.css'
 });
 
 //js打包功能
 
-//vue and lib pack
+// //vue and lib pack
 fis.match(/^\/libs\/(.*)[\.js]$/i,{
     packOrder:packOrderSeed++,
     packTo: '/static/packages/${site.name}/lib_pkg.js'
 });
-
+fis.match(/^\/libs\/qs\/(.*)[\.js]$/i,{
+        needFix:false,//文件属性，无需更新引用等
+        
+    }
+);
 //项目内部复用模块
 
 fis.match(/^\/config\/(.*)[\.js]$/i,{
@@ -96,6 +101,12 @@ fis.match(/^\/resources\/(.*)$/i,{
         release : '/static/resources/${site.name}/$0'
     }
 );
+// fis.match('*.scss', {
+//     rExt: '.css',
+//     parser: fis.plugin('node-sass', {
+//         // options...
+//     })
+// });
 
 fis.match(/^\/components\/(.*)$/i,{
         //追加id属性，id为【项目名/版本号/文件路径】

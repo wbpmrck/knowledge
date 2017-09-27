@@ -1,0 +1,9 @@
+#header{
+    width:100%;
+    background-color: #20a0ff;
+    color:#fff;
+}
+#header .logo{
+    width: 100%;
+    height: 100%;
+}

@@ -155,4 +155,23 @@ map.set(
         }
     }
 );
+map.set(
+    // 查询学科信息
+    ['GET', '/subject/query', 'ALLOW_ANONYMOUS'],
+    async function (ctx, next) {
+        const self = this;
+        try {
+            const { name } = ctx.request.query;
+        
+            // 调用service获取返回数据
+            const result = await subjectService.query({name});
+            ctx.body = result;
+        } catch (e) {
+            resp.failed({ desc: e.stack || e.toString() }, ctx);
+        } finally {
+            // 执行流程交给下一个middle-ware
+            await next();
+        }
+    }
+);
 module.exports = map;

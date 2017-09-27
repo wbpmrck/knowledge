@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>知识中心系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <!--样式表-->
+    <link rel="stylesheet" href="../../resources/css/reset.css">
+    <link rel="stylesheet" href="../../resources/css/style.css">
+    <link rel="stylesheet" href="../../libs/element/element-ui.css">
+</head>
+
+<body>
+
+<div id="root">
+    <el-row type="flex" class="row-bg">
+        <cp-header></cp-header>
+    </el-row>
+
+    <el-row type="flex" class="row-bg">
+        <el-col :span="4">
+            <cp-left-menu></cp-left-menu>
+        </el-col>
+
+        <el-col :span="20">
+            <div id="content-wrapper">
+                <router-view></router-view>
+            </div>
+        </el-col>
+    </el-row>
+
+    <el-row type="flex" class="row-bg">
+        <cp-footer></cp-footer>
+    </el-row>
+</div>
+    <!--入口脚本-->
+    <script type="text/javascript">
+        var entry = require("./index.js");
+        entry.init();
+    </script>
+</body>
+</html>

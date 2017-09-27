@@ -24,5 +24,22 @@ module.exports = {
             }
         });
         return resp.success({data: subjects});
+    },
+    /**
+     * 根据条件查询学科
+     * @param name:学科名称
+     * @returns {Promise.<*>}
+     */
+    async query({name}) {
+        // 获取用户信息
+        const subjects = await models.subject.findAll({
+            where: {
+                enable: 1,
+                name:{
+                    $like: `%${name}%`
+                }
+            }
+        });
+        return resp.success({data: subjects});
     }
 };

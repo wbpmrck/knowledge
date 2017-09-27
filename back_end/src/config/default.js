@@ -26,10 +26,11 @@ var config={
         path: 'app/views',
         options: {
             // map: { ect: 'ect' }
-            map: { html: 'ejs' },
+            // map: { html: 'ejs' },
+            map: { html: 'handlebars' },
             // options: {
-            //     open:'${',
-            //     close:'}'
+            //     open:'__render(',
+            //     close:')'
             // }
         }
     },

@@ -32,11 +32,7 @@ DROP TABLE IF EXISTS `subject` CASCADE
 ;
 DROP TABLE IF EXISTS `tag` CASCADE
 ;
-DROP TABLE IF EXISTS `tag_and_feature` CASCADE
-;
 DROP TABLE IF EXISTS `tag_and_material` CASCADE
-;
-DROP TABLE IF EXISTS `tag_and_module` CASCADE
 ;
 DROP TABLE IF EXISTS `train_route_map` CASCADE
 ;
@@ -134,6 +130,7 @@ CREATE TABLE `module`
 	`size` BIGINT NOT NULL DEFAULT 0 COMMENT '模块大小。单位KB. 概要描述框架/库的体积和重量级',
 	`license` NVARCHAR(64) NOT NULL DEFAULT '' COMMENT '许可证类型',
 	`address` NVARCHAR(512) NOT NULL DEFAULT '' COMMENT '关联的资料地址、官方首页等',
+	`dev_org` NVARCHAR(128) NOT NULL DEFAULT '' COMMENT '开发者/组织名称',
 	`enable` SMALLINT NOT NULL DEFAULT 1 COMMENT '是否有效。1有效',
 	`create_time` DATETIME(0) NOT NULL DEFAULT now(),
 	`update_time` DATETIME(0) NOT NULL DEFAULT now(),
@@ -148,9 +145,9 @@ CREATE TABLE `module_and_feature`
 	`id` BIGINT NOT NULL AUTO_INCREMENT,
 	`module_id` BIGINT NOT NULL DEFAULT -1,
 	`feature_id` BIGINT NOT NULL DEFAULT 0,
-	`support_degree` INTEGER NOT NULL DEFAULT 1000 COMMENT '支持度。使用[-1000，1000]以内的数值表示.表示这个库对这个特性的支持程度. 
- -1000:代表这个库非但不支持该特性，还会影响其他模块支持这个特性（排斥） 
- 1000：代表这个库非常完美的支持该特性',
+	`support_degree` INTEGER NOT NULL DEFAULT 100 COMMENT '支持度。使用[-100，100]以内的数值表示.表示这个库对这个特性的支持程度. 
+ -100:代表这个库非但不支持该特性，还会影响其他模块支持这个特性（排斥） 
+ 100：代表这个库非常完美的支持该特性',
 	`support_desc` NVARCHAR(1024) NOT NULL DEFAULT '' COMMENT '支持度备注。方便用户在选型的时候，查看该特性的支持方式，或者坑',
 	`create_time` DATETIME(0) NOT NULL DEFAULT now(),
 	`update_time` DATETIME(0) NOT NULL DEFAULT now(),
@@ -220,20 +217,6 @@ CREATE TABLE `tag`
 ;
 
 
-CREATE TABLE `tag_and_feature`
-(
-	`id` BIGINT NOT NULL AUTO_INCREMENT,
-	`tag_id` BIGINT NOT NULL DEFAULT -1,
-	`feature_id` BIGINT NOT NULL DEFAULT 0,
-	`create_time` DATETIME(0) NOT NULL DEFAULT now(),
-	`update_time` DATETIME(0) NOT NULL DEFAULT now(),
-	PRIMARY KEY (`id`),
-	UNIQUE `uk_tag_id_feature_id`(`tag_id`, `feature_id`)
-
-) 
-;
-
-
 CREATE TABLE `tag_and_material`
 (
 	`id` BIGINT NOT NULL AUTO_INCREMENT,
@@ -243,20 +226,6 @@ CREATE TABLE `tag_and_material`
 	`update_time` DATETIME(0) NOT NULL DEFAULT now(),
 	PRIMARY KEY (`id`),
 	UNIQUE `uk_tag_id_material_id`(`tag_id`, `material_id`)
-
-) 
-;
-
-
-CREATE TABLE `tag_and_module`
-(
-	`id` BIGINT NOT NULL AUTO_INCREMENT,
-	`tag_id` BIGINT NOT NULL DEFAULT -1,
-	`module_id` BIGINT NOT NULL DEFAULT 0,
-	`create_time` DATETIME(0) NOT NULL DEFAULT now(),
-	`update_time` DATETIME(0) NOT NULL DEFAULT now(),
-	PRIMARY KEY (`id`),
-	UNIQUE `uk_tag_id_module_id`(`tag_id`, `module_id`)
 
 ) 
 ;
@@ -281,7 +250,7 @@ CREATE TABLE `train_step`
 (
 	`id` BIGINT NOT NULL AUTO_INCREMENT,
 	`train_route_map_id` BIGINT COMMENT '所属路线',
-	`priority` INTEGER NOT NULL DEFAULT 1 COMMENT '优先级，越大优先级越高。代表学习的先后顺序',
+	`priority` INTEGER NOT NULL DEFAULT 1 COMMENT '优先级，越小优先级越高。代表学习的先后顺序',
 	`name` NVARCHAR(128) NOT NULL DEFAULT '' COMMENT '学习路线名称',
 	`desc` NVARCHAR(256) NOT NULL DEFAULT '' COMMENT '学习路线描述',
 	`enable` SMALLINT NOT NULL DEFAULT 1 COMMENT '是否有效',

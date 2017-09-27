@@ -23,8 +23,8 @@ map.set(
     //首页，允许匿名访问
     ["GET","/","ALLOW_ANONYMOUS"],
     async function (ctx,next) {
-        await ctx.render('home/index.html', {
-            // userInfo: JSON.stringify(ctx.getSessionUser())
+        await ctx.render('root/index.html', {
+            userInfo: JSON.stringify(ctx.getSessionUser())
         });
         await next();
     }

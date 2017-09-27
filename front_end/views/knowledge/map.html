@@ -24,7 +24,7 @@
     <script type="text/javascript">
         var map = require("./map.js");
         //从服务端获取所有知识点数据，加载到页面
-        map.init(<%-knowledgeNodes%>);
+        map.init({{{knowledgeNodes}}});
     </script>
 </body>
 </html>

@@ -24,6 +24,7 @@
     "config": "^1.12.0",
     "ejs": "^2.5.7",
     "glob": "^7.1.1",
+    "handlebars": "^4.0.10",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-orm": "^2.0.0",
