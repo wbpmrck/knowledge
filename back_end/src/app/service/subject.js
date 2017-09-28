@@ -8,6 +8,7 @@ const { db, models } = require('../dao/orm');
 const consts = require('../dao/const/const');
 const co = require('co');
 const validate = require('../../framework/onelib/OneLib.Validation').targetWrapper;
+const queryHelper = require('../../framework/dao/queryHelper');
 
 module.exports = {
     
@@ -18,28 +19,78 @@ module.exports = {
      */
     async getAll(context) {
         // 获取用户信息
-        const subjects = await models.subject.findAll({
-            where: {
-                enable: 1
-            }
-        });
+        const subjects = await models.subject.findAll();
         return resp.success({data: subjects});
     },
     /**
      * 根据条件查询学科
-     * @param name:学科名称
+     * @param context
+     * @param condition
      * @returns {Promise.<*>}
      */
-    async query({name}) {
+    async query(context,condition) {
+        queryHelper.removeEmptyCondition(condition);
+        
+        if(condition.name!==undefined){
+            condition.name = {
+                $like: `%${condition.name}%`
+            }
+        }
         // 获取用户信息
         const subjects = await models.subject.findAll({
-            where: {
-                enable: 1,
-                name:{
-                    $like: `%${name}%`
-                }
-            }
+            where: condition
         });
         return resp.success({data: subjects});
+    },
+    /**
+     * 修改学科信息
+     * @param context
+     * @param subject：id必须传，其他字段传入则修改
+     * @returns {Promise.<*>}
+     */
+    async update(context,subject) {
+        subject.update_time = new Date();
+        let id = subject.id;
+        delete subject['id'];
+        // 获取用户信息
+        const updated = await models.subject.update(subject,{
+                where:{
+                    id:id
+                }
+            });
+        return resp.success({data: updated});
+    },
+    /**
+     * 新增学科信息
+     * @param context
+     * @param subject
+     * @returns {Promise.<*>}
+     */
+    async create(context,{name,desc,enable}) {
+        //参数简单检查
+        let validateResult = await validate(name, "name").notNull().notEmptyStr().lengthBetween(1,64)
+            .and(desc, "desc").notNull().notEmptyStr().lengthBetween(1,128)
+            .and(enable, "enable").notNull().isOneOf(["1","0"])
+            .run();
+    
+        //如果验证通过
+        if (validateResult.pass) {
+            let created = await models.subject.create(
+                {
+                    name,
+                    desc,
+                    enable
+                }
+            );
+    
+            //重新查询对象信息
+            await created.reload();
+            return resp.success({data: created});
+        }else {
+            return resp.failed({
+                code: resp.codes.PARAM_ILLEGAL,
+                desc: `${validateResult.desc}${validateResult.funcDesc}`
+            })
+        }
     }
 };

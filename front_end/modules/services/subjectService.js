@@ -2,11 +2,38 @@
 // @alia subjectService
 var ajaxHelper = require("./ajaxHelper.js");
 
-exports.query=function (name) {
+/**
+ * 查询subject
+ * @param name
+ */
+exports.query=function (condition) {
     
     return ajaxHelper.get(
         `/subject/query`,
-        {name:name}
+        condition
     )
-}
+};
+
+/**
+ * 更新单个subject
+ * @param subject
+ */
+exports.update=function (subject) {
+    
+    return ajaxHelper.post(
+        `/subject/update`,
+        subject
+    )
+};
+/**
+ * 新增subject
+ * @param subject
+ */
+exports.create=function (subject) {
+    
+    return ajaxHelper.post(
+        `/subject/create`,
+        subject
+    )
+};
     

@@ -1,9 +1,9 @@
 /**
- * @alia cp.subject
+ * @alia cp.knowledge
  */
 var Vue = require("vue");
 var vueUtil = require("vueUtil");
-var subjectService = require("subjectService");
+var knowledgeService = require("knowledgeService");
 var validation = require("OneLib.Validation");
 var urlHelper = require("urlHelper");
 
@@ -11,14 +11,14 @@ var component;
 
 exports.init = function(){
     if(!component){
-        component = Vue.component('cp-subject',{
-            template:vueUtil.replaceStr(__inline("subject.html")),
+        component = Vue.component('cp-knowledge',{
+            template:vueUtil.replaceStr(__inline("knowledge.html")),
             data:function(){
                 return {
                     condition: {
                         name: ''
                     },
-                    subjects: [
+                    knowledges: [
                       
                     ]
                 }
@@ -27,7 +27,7 @@ exports.init = function(){
                 this.query();
             },
             methods:{
-                toggleEnable:function(subject) {
+                toggleEnable:function(knowledge) {
                     var self = this;
                     
                     //提示用户
@@ -37,10 +37,10 @@ exports.init = function(){
                         type: 'warning'
                     }).then(function(){
                         var subjectToUpdate={
-                            id:subject.id,
-                            enable:+!subject.enable
+                            id:knowledge.id,
+                            enable:+!knowledge.enable
                         };
-                        subjectService.update(subjectToUpdate).then(function (resp) {
+                        knowledgeService.update(subjectToUpdate).then(function (resp) {
                             if(resp && resp.success){
                                 self.$notify({
                                     title: '成功',
@@ -73,9 +73,9 @@ exports.init = function(){
                 },
                 query:function() {
                     var self = this;
-                    subjectService.query(this.condition).then(function (resp) {
+                    knowledgeService.query(this.condition).then(function (resp) {
                         if(resp && resp.success){
-                            self.subjects = resp.data;
+                            self.knowledges = resp.data;
                         }else{
                             self.$notify.error({
                                 title: '错误',
@@ -90,14 +90,14 @@ exports.init = function(){
                     });
                 },
                 createSubject:function() {
-                    this.$router.push({ name: 'subject-new'});
+                    this.$router.push({ name: 'knowledge-new'});
                 },
-                edit:function(subject) {
-                    this.$router.push({ name: 'subject-edit', params: { id: subject.id }});
+                edit:function(knowledge) {
+                    this.$router.push({ name: 'knowledge-edit', params: { id: knowledge.id }});
                     // alert('edit!');
                 },
-                viewSkillMap:function(subject) {
-                    urlHelper.redirectTo("map/"+subject.id,"knowledge");
+                viewMaterial:function(knowledge) {
+                    urlHelper.redirectTo("index?knowledgeId="+knowledge.id,"material");
                 }
             },
             mounted:function(){

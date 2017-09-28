@@ -3,10 +3,20 @@ html,body{
     height: 100%;
     font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
 }
+
+/*对 elementUI的定制*/
+.el-checkbox-group .el-checkbox{
+    padding-right: 20px;
+}
+.el-checkbox-group .el-checkbox+.el-checkbox {
+    margin-left: 0;
+}
 .el-row {
     margin-bottom: 20px;
     /*margin: 20px 0;*/
 }
+
+
 /*查询条件区域的按钮区*/
 .condition-btn-region{
     text-align: right;

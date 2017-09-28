@@ -3,7 +3,9 @@ var Vue = require("vue");
 var elementUI = require("elementUI");
 var urlHelper = require("urlHelper");
 var vueRouter = require("vue-router");
+var config = require("../../config/configs.js");
 
+urlHelper.setRoot(config.dynamicDomain);
 exports.init=function (userInfo) {
     
     
@@ -33,6 +35,24 @@ exports.init=function (userInfo) {
             { path: '/subject/index',
                 name: 'subject',
                 component: require("cp.subject").init(),
+            },
+            { path: '/subject/new',
+                name: 'subject-new',
+                component: require("cp.subject.edit").init(),
+                meta:{
+                    mode:"create"
+                }
+            },
+            { path: '/subject/edit/:id',
+                name: 'subject-edit',
+                component: require("cp.subject.edit").init(),
+                meta:{
+                    mode:"update"
+                }
+            },
+            { path: '/knowledge/index',
+                name: 'knowledge',
+                component: require("cp.knowledge").init(),
             }
         ]
     });

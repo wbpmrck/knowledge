@@ -1,13 +1,13 @@
 <div id="subject">
-    <h2>学科管理</h2>
+    <h2>知识点管理</h2>
     <div class="line"></div>
 
     <!--<div class="region-blk">-->
         <el-row class="condition" type="flex" justify="space-between">
             <el-col :span="8">
-                <el-form ref="form" :model="condition" label-width="80px">
-                    <el-form-item label="学科名称">
-                        <el-input placeholder="请输入要查找的学科" v-model="condition.name" @keyup.enter.native="query">
+                <el-form ref="form" :model="condition" label-width="100px">
+                    <el-form-item label="知识点名称">
+                        <el-input placeholder="请输入要查找的知识点名称" v-model="condition.name" @keyup.enter.native="query">
                         </el-input>
                     </el-form-item>
 
@@ -25,16 +25,17 @@
     <el-table
             border
             stripe
-            :data="subjects"
+            :data="knowledges"
             style="width: 100%">
         <el-table-column
                 prop="name"
                 label="名称"
-                width="180">
+                width="200">
         </el-table-column>
         <el-table-column
-                prop="desc"
-                label="描述"
+                prop="parentName"
+                width="200"
+                label="父知识点"
                 >
         </el-table-column>
         <el-table-column
@@ -45,14 +46,23 @@
                 {{scope.row.enable?"启用":"禁用"}}
             </template>
         </el-table-column>
+
+        <el-table-column
+                label="关联学科">
+            <template scope="scope">
+                <template v-for="subject in scope.row.subject">
+                    {{subject.subject_name}};
+                </template>
+            </template>
+        </el-table-column>
         <el-table-column
                 width="100"
-                label="技能树">
+                label="相关资料">
             <template scope="scope">
                 <el-button
-                        icon="share"
+                        icon="document"
                         size="small"
-                        @click="viewSkillMap(scope.row)">查看</el-button>
+                        @click="viewMaterial(scope.row)">查看</el-button>
             </template>
         </el-table-column>
 

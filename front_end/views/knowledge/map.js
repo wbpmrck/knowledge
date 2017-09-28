@@ -1,9 +1,9 @@
 
 var G6 = require("g6");
 var G6Helper = require("g6-helper");
-exports.init=function (knowledges) {
-    console.log("knowledges="+JSON.stringify(knowledges));
-    var nodes = G6Helper.translateArrayToTree("web前端",knowledges);
+exports.init=function (subject,knowledges) {
+    // console.log("knowledges="+JSON.stringify(knowledges));
+    var nodes = G6Helper.translateArrayToTree(subject.name,knowledges);
 
     // 准备布局配置
     var layoutCfg = {

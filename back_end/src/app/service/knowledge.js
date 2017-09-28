@@ -8,9 +8,56 @@ const { db, models } = require('../dao/orm');
 const consts = require('../dao/const/const');
 const co = require('co');
 const validate = require('../../framework/onelib/OneLib.Validation').targetWrapper;
+const queryHelper = require('../../framework/dao/queryHelper');
 
 module.exports = {
     
+    /**
+     * 根据条件查询知识点
+     * @param context
+     * @param condition
+     * @returns {Promise.<*>}
+     */
+    async query(context,condition) {
+        queryHelper.removeEmptyCondition(condition);
+        
+        if(condition.name !== undefined){
+            condition.name = `%${condition.name}%`;
+        }
+        // 获取知识点以及父知识点信息
+        const knowledges = await db.query(`
+        SELECT A.*, B.name as parentName
+        FROM 
+        knowledge A LEFT OUTER JOIN knowledge B ON A.parent_id = B.id
+        WHERE 1=1
+        ${condition.id!==undefined?"AND A.id=:id ":" "}
+        ${condition.name!==undefined?"AND A.name like :name ":" "}
+        `,
+            {
+                replacements: condition,
+                type: db.QueryTypes.SELECT
+            }
+        );
+        
+        // todo:获取知识点关联的学科
+        const knowledgesAndSubject = await db.query(`
+        SELECT A.knowledge_id,B.id as subject_id,B.name as subject_name
+        FROM
+        knowledge_and_subject A INNER JOIN subject B ON A.subject_id=B.id 
+        
+        WHERE A.knowledge_id in (:ids) `,
+            {
+                replacements: { ids:  knowledges.map(k=>k.id)},
+                type: db.QueryTypes.SELECT
+            }
+        );
+        knowledges.forEach(k=>{
+           k.subject=knowledgesAndSubject.filter(i=>i.knowledge_id===k.id)
+        });
+        
+
+        return resp.success({data: knowledges});
+    },
     /**
      * 删除某个知识点（包括它和所有学科的关系）
      * @param context
@@ -108,16 +155,27 @@ module.exports = {
      * @param context
      * @param name:知识点名称
      * @param parentId：父亲知识点
-     * @param subjectId：学科id
+     * @param subjectIds：学科id列表，,分割
      * @returns {Promise.<*>}
      */
-    async addKnowledge(context,{name, parentId,subjectId}) {
+    async addKnowledge(context,{name,enable,parentId,subjectIds}) {
     
         //参数简单检查
-        let validateResult = await validate(name, "name").notNull().notEmptyStr()
+        let validateObj =  validate(name, "name").notNull().notEmptyStr()
             .and(parentId, "parentId").notNull().isIntStr(1,30)
-            .and(subjectId, "subjectId").notNull().isIntStr(1,30)
-            .run();
+            .and(enable, "enable").notNull().isOneOf(["1","0"])
+            .and(subjectIds, "subjectIds").notNull();
+        
+        if(subjectIds!==undefined && subjectIds.length>0){
+            subjectIds= subjectIds.split(",");
+            // validateObj.and(subjectIds,'subjectIds').existInTable("subject",["id",""]);
+            subjectIds.forEach(it=>{
+                validateObj.and(it,`subjectId:${it}`).existInTable("subject","id");
+            })
+            
+        }
+        
+        let validateResult= await validateObj.run();
     
         //如果验证通过
         if (validateResult.pass) {
@@ -135,13 +193,15 @@ module.exports = {
             await created.reload();
     
             if (created) {
+                // subjectIds = subjectIds.split(",");
+                let relationsToCreate = subjectIds.map((subjectId)=>{
+                   return {
+                       knowledge_id:created.id,
+                       subject_id:subjectId
+                   }
+                });
                 //添加学科关系
-                let createdRelation = await models.knowledge_and_subject.create(
-                    {
-                        knowledge_id:created.id,
-                        subject_id:subjectId
-                    }
-                );
+                let createdRelation = await models.knowledge_and_subject.bulkCreate(relationsToCreate);
     
                 if(createdRelation){
                     return resp.success({data: created});

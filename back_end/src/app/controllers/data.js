@@ -38,6 +38,25 @@ map.set(
  */
 
 map.set(
+    // 查询学科信息
+    ['GET', '/knowledge/query', 'ALLOW_ANONYMOUS'],
+    async function (ctx, next) {
+        const self = this;
+        try {
+            const { id,name } = ctx.request.query;
+            
+            // 调用service获取返回数据
+            const result = await knowledgeService.query(ctx,{id,name});
+            ctx.body = result;
+        } catch (e) {
+            resp.failed({ desc: e.stack || e.toString() }, ctx);
+        } finally {
+            // 执行流程交给下一个middle-ware
+            await next();
+        }
+    }
+);
+map.set(
     // 删除某个一个知识点
     ['POST', '/knowledge/delete', 'ALLOW_ANONYMOUS'],
     async function (ctx, next) {
@@ -81,10 +100,10 @@ map.set(
     async function (ctx, next) {
         const self = this;
         try {
-            const { name, parentId,subjectId} = ctx.request.body;
+            const { name,enable, parentId,subjectIds} = ctx.request.body;
             
             // 调用service获取返回数据
-            const result = await knowledgeService.addKnowledge(ctx,{ name, parentId,subjectId});
+            const result = await knowledgeService.addKnowledge(ctx,{ name, enable,parentId,subjectIds});
             ctx.body = result;
         } catch (e) {
             resp.failed({ desc: e.stack || e.toString() }, ctx);
@@ -161,10 +180,46 @@ map.set(
     async function (ctx, next) {
         const self = this;
         try {
-            const { name } = ctx.request.query;
+            const { id,name } = ctx.request.query;
         
             // 调用service获取返回数据
-            const result = await subjectService.query({name});
+            const result = await subjectService.query(ctx,{id,name});
+            ctx.body = result;
+        } catch (e) {
+            resp.failed({ desc: e.stack || e.toString() }, ctx);
+        } finally {
+            // 执行流程交给下一个middle-ware
+            await next();
+        }
+    }
+);
+map.set(
+    // 修改 学科
+    ['POST', '/subject/update', 'ALLOW_ANONYMOUS'],
+    async function (ctx, next) {
+        const self = this;
+        try {
+            const subject = ctx.request.body;
+            // 调用service获取返回数据
+            const result = await subjectService.update(ctx,subject);
+            ctx.body = result;
+        } catch (e) {
+            resp.failed({ desc: e.stack || e.toString() }, ctx);
+        } finally {
+            // 执行流程交给下一个middle-ware
+            await next();
+        }
+    }
+);
+map.set(
+    // 新增 学科
+    ['POST', '/subject/create', 'ALLOW_ANONYMOUS'],
+    async function (ctx, next) {
+        const self = this;
+        try {
+            const subject = ctx.request.body;
+            // 调用service获取返回数据
+            const result = await subjectService.create(ctx,subject);
             ctx.body = result;
         } catch (e) {
             resp.failed({ desc: e.stack || e.toString() }, ctx);

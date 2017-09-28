@@ -1,0 +1,28 @@
+<div id="subject-edit">
+    <h2>学科{{meta.mode==='create'?'新增':'编辑'}}</h2>
+    <div class="line"></div>
+
+    <el-row>
+        <el-col :span="12">
+            <el-form ref="subject" :model="subject" :rules="rules" label-width="80px">
+                <el-form-item label="学科名称" prop="name">
+                    <el-input v-model="subject.name"  @keyup.enter.native="submit"></el-input>
+                </el-form-item>
+                <el-form-item label="学科描述" prop="desc">
+                    <el-input v-model="subject.desc"  @keyup.enter.native="submit"></el-input>
+                </el-form-item>
+
+                <el-form-item label="是否启用">
+                    <el-switch on-text="" off-text=""  :on-value="1" :off-value="0" v-model="subject.enable"></el-switch>
+                </el-form-item>
+
+            </el-form>
+            <el-button type="primary" @click="submit()">提交</el-button>
+            <el-button @click="cancel()">取消</el-button>
+        </el-col>
+    </el-row>
+
+
+
+
+</div>

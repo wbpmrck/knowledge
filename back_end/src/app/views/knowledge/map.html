@@ -27,7 +27,7 @@ define("/views/knowledge/map.html.1",function(require,exports,module){
 
         var map = require("/views/knowledge/map.js");
         //从服务端获取所有知识点数据，加载到页面
-        map.init({{{knowledgeNodes}}});
+        map.init({{{subject}}},{{{knowledgeNodes}}});
     
  });</script>
 </body>
